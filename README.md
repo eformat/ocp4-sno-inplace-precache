@@ -335,7 +335,7 @@ CORE_OS_INSTALLER_ARGS="rd.neednet=1 ip=${ip}::${gateway}:${netmask}:${hostname}
 Apply the kernel args our boot iso
 
 ```bash
-./coreos-installer iso kargs modify -a ${CORE_OS_INSTALLER_ARGS} rhcos-live.x86_64.iso
+./coreos-installer iso kargs modify -a "${CORE_OS_INSTALLER_ARGS}" rhcos-live.x86_64.iso
 ```
 
 Check all looks well
