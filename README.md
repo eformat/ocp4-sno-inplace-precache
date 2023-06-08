@@ -6,7 +6,7 @@ We want to avoid downloading all the images that are required for bootstrapping 
 
 Motivations:
 
-- not a telco workload (so do not want all the ztp/ran/telco stuff, just the pre-cache factory edge tech)
+- not a telco workload which has very good bandwidth normally (and we do not want all the ztp/ran/telco stuff, just the pre-cache factory edge tech)
 - ztp pre-cache tech (control exactly what images to pre-cache)
 - bootstrap in place for a SNO factory machine
 - install SNO at the edge on bare metal
