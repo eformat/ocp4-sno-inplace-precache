@@ -381,7 +381,13 @@ Reboot from the iso disk usb.
 
 ## (6) bootkube bootstrap
 
-Two service run at first - `precache-images.service` and `bootkube.service`.
+Two services run at first - `precache-images.service` and `bootkube.service`.
+
+The precache-images.service pulls images into podman, if you ssh to factory machine using core@host you can check using
+
+```bash
+podman images
+```
 
 If either of these services fail - see trouble shooting guide.
 
