@@ -452,7 +452,7 @@ And eventually login using kubadmin
 
 ```bash
 oc whoami --show-console
-cat <path to>/cluster/auth/kube
+cat <path to>/cluster/auth/kubeadmin-password
 ```
 
 ## Troubleshooting
