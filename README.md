@@ -1,4 +1,4 @@
-# OCP4 SNO Boot-in-place with pre-caching
+# OCP4 SNO Boot-in-place with Pre-caching
 
 Install Single Node OpenShift on an edge factory device using image pre-caching.
 
