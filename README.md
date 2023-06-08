@@ -86,7 +86,7 @@ interface='enp0s25'
 nameserver='192.168.86.27'
 ```
 
-The factory machine will need to be able to resolve common DNS names for SNO that will be installed on it. So on the `nameserver` host configure the OpenShift wildcard A records for our `domain` e.g. If using `bind` on linux edit /var/named/dynamic.<domain>.db
+The factory machine will need to be able to resolve common DNS names for SNO that will be installed on it. So on the `nameserver` host configure the OpenShift wildcard A records for our `domain` e.g. If using `bind` on linux edit /var/named/dynamic.domain.db
 
 ```bash
 api.bip IN      A      192.168.86.45
@@ -101,7 +101,7 @@ systemctl reload named
 ```
 
 ```bash
-dig api.bip.<domain>
+dig api.bip.domain
 ```
 
 NTP is default and the factory machine will need to be able to see the fedora time servers  - FIXME override ntp source at install time.
