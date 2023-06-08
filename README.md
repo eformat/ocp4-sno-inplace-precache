@@ -580,7 +580,7 @@ There is no easy way around this, you must regenerate you ignition (24hr hardcod
 
 Do this if you want to pre-create usb iso's and need them done ahead of time and have bootstrap certs stay valid for longer than 24hr.
 
-Try this a custom openshift-installer binary for OpenShift v4.12.18 that sets all ValidityOneDay certs to ValidityOneYear certs (WARNING: they are short lived so others cannot use them nefariously).
+Build a custom openshift-installer binary for OpenShift v4.12.18 that sets all ValidityOneDay certs to ValidityOneYear certs (WARNING: they are short lived so others cannot use them nefariously).
 
 ```bash
 wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.12.18/openshift-install-src-4.12.18-x86_64.tar.gz
