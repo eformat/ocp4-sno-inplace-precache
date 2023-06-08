@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+baseDomain: eformat.me
+metadata:
+  name: bip
+networking:
+  networkType: OVNKubernetes
+  machineNetwork:
+  - cidr: 192.168.86.0/24
+compute:
+- name: worker
+  replicas: 0
+controlPlane:
+  name: master
+  replicas: 1
+platform:
+  none: {}
+bootstrapInPlace:
+  installationDisk: /dev/sda
+pullSecret: <YOUR REDHAT PULL SECRET>
+sshKey: |
+  <YOUR SSH PUBLIC KEY>
