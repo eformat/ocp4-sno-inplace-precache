@@ -1221,7 +1221,7 @@
         "name": "systemd-journal-gatewayd.service"
       },
       {
-        "contents": "", 
+        "contents": "",
         "enabled": true,
         "name": "systemd-journal-gatewayd.socket"
       },
