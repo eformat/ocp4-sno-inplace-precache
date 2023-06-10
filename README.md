@@ -610,7 +610,7 @@ Certificate:
             Not After : Jun  7 19:26:35 2024 GMT
 ```
 
-In generated ignition make sure /usr/local/bin/install-to-disk.sh -> points to a non-ci image (compiled installer will generate registry.ci.openshift.org/origin/release:4.12)
+In generated ignition make sure /usr/local/bin/release-image.sh -> points to a non-ci image (compiled installer will generate registry.ci.openshift.org/origin/release:4.12)
 
 ### CNI OVNKubernetes hangs
 
