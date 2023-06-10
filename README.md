@@ -586,7 +586,6 @@ Build a custom openshift-installer binary for OpenShift v4.12.18 that sets all V
 wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.12.18/openshift-install-src-4.12.18-x86_64.tar.gz
 tar xzvf openshift-install-src-4.12.18-x86_64.tar.gz
 -- vi - replace all CertCfg: ValidityOneDay -> ValidityOneYear
--- in ignition make sure /usr/local/bin/install-to-disk.sh -> points to non-ci image (compiled installer uses registry.ci.openshift.org/origin/release:4.12)
 -- hack the build.sh so we are not tagging it to git
 ./hack/build.sh
 + go build -mod=vendor -ldflags ' -s -w' -tags ' release' -o bin/openshift-install ./cmd/openshift-install
@@ -610,6 +609,8 @@ Certificate:
             Not Before: Jun  8 19:26:35 2023 GMT
             Not After : Jun  7 19:26:35 2024 GMT
 ```
+
+In generated ignition make sure /usr/local/bin/install-to-disk.sh -> points to a non-ci image (compiled installer will generate registry.ci.openshift.org/origin/release:4.12)
 
 ### CNI OVNKubernetes hangs
 
