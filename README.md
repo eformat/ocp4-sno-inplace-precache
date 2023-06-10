@@ -359,8 +359,6 @@ sgdisk -n 5:-250GiB:0 /dev/sda -g -c:5:data
 mkfs.xfs -f /dev/sda5
 ```
 
-FIXME - recover this sda5 space at some point post SNO install.
-
 Now also plugin the 300GB usb drive (in this case /dev/sdc1) so we can copy the precache images across to /dev/sda.
 
 ```bash
@@ -378,6 +376,8 @@ This will take some time to copy.
 Once done, remove the precache  300GB usb drive.
 
 Reboot from the iso disk usb.
+
+Notes: FIXME - recover this sda5 space at some point post SNO install. We COULD just use the second 300GB drive (labelled data) and just plug that in for both install phases - since the copy scripts use data labelled disk to podman ? rather than create on-machine-disk copies. This would negate the need for this /sda5 creation and copy stage. Although /dev/sda5 it could be kept around for a reinstall from scratch.
 
 ## (6) bootkube bootstrap
 
