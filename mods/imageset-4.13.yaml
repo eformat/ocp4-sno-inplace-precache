@@ -1,0 +1,50 @@
+---
+apiVersion: mirror.openshift.io/v1alpha2
+kind: ImageSetConfiguration
+mirror:
+  platform:
+    channels:
+    - name: stable-4.13
+      minVersion: 4.13.1
+      maxVersion: 4.13.1
+  additionalImages:
+  operators:
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.13
+      packages:
+        - name: multicluster-engine
+          channels:
+            - name: 'stable-2.2'
+              minVersion: 2.2.4
+              maxVersion: 2.2.4
+        - name: lvms-operator
+          channels:
+            - name: 'stable-4.13'
+              minVersion: 4.13.1
+              maxVersion: 4.13.1
+        - name: nfd
+          channels:
+            - name: 'stable'
+              minVersion: 4.13.0-202305262054
+              maxVersion: 4.13.0-202305262054
+        - name: mtv-operator
+          channels:
+            - name: 'release-v2.4'
+              minVersion: 2.4.1
+              maxVersion: 2.4.1
+        - name: kubevirt-hyperconverged
+          channels:
+            - name: 'stable'
+              minVersion: 4.13.0
+              maxVersion: 4.13.0
+        - name: kubernetes-nmstate-operator
+          channels:
+            - name: 'stable'
+              minVersion: 4.13.0-202305262054
+              maxVersion: 4.13.0-202305262054
+    - catalog: registry.redhat.io/redhat/certified-operator-index:v4.13
+      packages:
+        - name: gpu-operator-certified
+          channels:
+            - name: 'v23.3'
+              minVersion: 23.3.2
+              maxVersion: 23.3.2

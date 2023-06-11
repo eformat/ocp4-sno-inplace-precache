@@ -217,6 +217,8 @@ mirror:
         - name: mtv-operator
           channels:
             - name: 'release-v2.4'
+              minVersion: 2.4.1
+              maxVersion: 2.4.1
         - name: kubevirt-hyperconverged
           channels:
             - name: 'stable'
