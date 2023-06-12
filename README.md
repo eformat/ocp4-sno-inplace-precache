@@ -106,7 +106,9 @@ systemctl reload named
 dig api.bip.domain
 ```
 
-NTP is default and the factory machine will need to be able to see the fedora time servers  - FIXME override ntp source at install time.
+`FIXME` override ntp source at install time.
+
+NTP is default and the factory machine will need to be able to see the fedora time servers
 
 The fedora workstation should be able to see the factory machine and network for debug purposes and be able to ssh to it.
 
@@ -297,7 +299,7 @@ cat cluster/bootstrap-in-place-for-live-iso.ign | jq . > cluster/bootstrap-in-pl
 
 Apply the diffs to the ignition to enable precache features, works around known bugs. The `bootstrap-in-place-for-live-iso-formatted-with-boot-beauty.ign` is sanitized to remove all secrets, contains the base64 encoded [mods](./mods/) files and systemd changes.
 
-(FIXME - NEEDS jq like automation for all this)
+`FIXME` - we jq/butane like automation for all this.
 
 ```bash
 meld \
@@ -381,7 +383,7 @@ Once done, remove the precache  300GB usb drive.
 
 Reboot from the iso disk usb.
 
-Notes: FIXME - recover this sda5 space at some point post SNO install. We COULD just use the second 300GB drive (labelled data) and just plug that in for both install phases - since the copy scripts use data labelled disk to podman ? rather than create on-machine-disk copies. This would negate the need for this /sda5 creation and copy stage. Although /dev/sda5 it could be kept around for a reinstall from scratch.
+Notes: `FIXME` - recover this sda5 space at some point post SNO install. We COULD just use the second 300GB drive (labelled data) and just plug that in for both install phases - since the copy scripts use data labelled disk to podman ? rather than create on-machine-disk copies. This would negate the need for this /sda5 creation and copy stage. Although /dev/sda5 it could be kept around for a reinstall from scratch.
 
 ## (6) bootkube bootstrap
 
@@ -425,9 +427,25 @@ The system is going down for reboot at Thu 2023-06-08 09:29:22 UTC!
 
 🪛🪛 Unplug the usb drive as server reboots !! we need to boot from /sda now 🪛🪛
 
-## (7) pivot for rpm-ostree
+## (7) pivot for rpm-ostree, MCD firstboot.service
 
-FIXME - A pivot rpm-ostree may occur if connected to the internet ?
+`FIXME` - A pivot rpm-ostree may occur ?
+
+`FIXME` - the first two services post bootstrap do not use the cache - even in ZTP the precache-ocp-images.service waits for the machine-config-daemon-pull.service. More work required here.
+
+```bash
+systemctl status machine-config-daemon-firstboot.service
+systemctl status machine-config-daemon-pull.service
+```
+
+`FIXME` - We can see on the core NIC the following traffic post install from these activities - ideally these are cached as well / we fix the service ordering.
+
+```bash
+[core@bip ~]$ ifconfig enp0s25
+enp0s25: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        ether 28:d2:44:d3:ef:1c  txqueuelen 1000  (Ethernet)
+        RX packets 1006876  bytes 1432512465 (1.3 GiB)
+```
 
 ## (8) bootkube post bootstrap
 
