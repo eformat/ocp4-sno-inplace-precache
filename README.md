@@ -187,7 +187,7 @@ oc mirror list operators --catalog registry.redhat.io/redhat/redhat-operator-ind
 oc mirror list operators --catalog registry.redhat.io/redhat/certified-operator-index:v4.13
 ```
 
-For OpenShift v4.13.1 i used in this as an example (see [pre-cahe](/pre-cache) directory for 4.12,4.13 imageset yaml files):
+For OpenShift v4.13.1 i used in this as an example (see [pre-cache](/pre-cache) directory for 4.12,4.13 imageset yaml files):
 
 ```yaml
 ---
