@@ -16,6 +16,8 @@ Motivations:
 
 🛠️ These instructions are very manually intensive .. one day i may automate this ... 🛠️
 
+You can choose OPENSHIFT_VERSION of 4.12.8 or 4.13.1 - the ignition files for both are checked in and working. Use the appropriate version for your use case, the docs cover 4.13.1 version.
+
 ## (1) prerequisite tools and hardware and sizing
 
 - fedora core workstation
