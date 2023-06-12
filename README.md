@@ -37,7 +37,7 @@ Motivations:
   - download version of OpenShift install go binary
 
    ```bash
-   OPENSHIFT_VERSION=4.12.18
+   OPENSHIFT_VERSION=4.13.1
    SYSTEM_OS_ARCH=$(uname -m)
    SYSTEM_OS_FLAVOR=linux
    wget https://mirror.openshift.com/pub/openshift-v4/${SYSTEM_OS_ARCH}/clients/ocp/${OPENSHIFT_VERSION}/openshift-install-${SYSTEM_OS_FLAVOR}.tar.gz
@@ -60,10 +60,10 @@ Motivations:
   - download matching version of rhcos-live iso
 
    ```bash
-   RHCOS_MAJOR_VERSION=4.12
-   RHCOS_MINOR_VERSION=4.12.17
+   RHCOS_MAJOR_VERSION=4.13
+   RHCOS_MINOR_VERSION=4.13.0
    SYSTEM_OS_ARCH=$(uname -m)
-   wget -O coreos-installer https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/${RHCOS_MAJOR_VERSION}/${RHCOS_MINOR_VERSION}/rhcos-${RHCOS_MINOR_VERSION}-${SYSTEM_OS_ARCH}-live.${SYSTEM_OS_ARCH}.iso
+   wget -O rhcos-${RHCOS_MINOR_VERSION}-${SYSTEM_OS_ARCH}-live.${SYSTEM_OS_ARCH}.iso https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/${RHCOS_MAJOR_VERSION}/${RHCOS_MINOR_VERSION}/rhcos-${RHCOS_MINOR_VERSION}-${SYSTEM_OS_ARCH}-live.${SYSTEM_OS_ARCH}.iso
    ```
 
 - 2 usb's disks
@@ -163,7 +163,7 @@ Start a default precache and then halt it:
 ```bash
 podman run -v /mnt:/mnt -v /root/.docker:/root/.docker --privileged --rm quay.io/openshift-kni/telco-ran-tools -- \
    factory-precaching-cli download \
-   -r 4.12.18 \
+   -r 4.13.1 \
    --acm-version 2.7.4 \
    --mce-version 2.2.4 \
    --parallel 10 \
@@ -179,11 +179,11 @@ vi /mnt/imageset.yaml
 Substitute in our pre-prepared file. Be explicit about versions to minimize image download size. Choose your operators and versions e.g. you can use these commands to list all operators in a particular catalog:
 
 ```bash
-oc mirror list operators --catalog registry.redhat.io/redhat/redhat-operator-index:v4.12
-oc mirror list operators --catalog registry.redhat.io/redhat/certified-operator-index:v4.12
+oc mirror list operators --catalog registry.redhat.io/redhat/redhat-operator-index:v4.13
+oc mirror list operators --catalog registry.redhat.io/redhat/certified-operator-index:v4.13
 ```
 
-For OpenShift v4.12.18 I used in this as an example:
+For OpenShift v4.13.1 i used in this as an example (see [pre-cahe](/pre-cache) directory for 4.12,4.13 imageset yaml files):
 
 ```yaml
 ---
@@ -192,12 +192,12 @@ kind: ImageSetConfiguration
 mirror:
   platform:
     channels:
-    - name: stable-4.12
-      minVersion: 4.12.18
-      maxVersion: 4.12.18
+    - name: stable-4.13
+      minVersion: 4.13.1
+      maxVersion: 4.13.1
   additionalImages:
   operators:
-    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.12
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.13
       packages:
         - name: multicluster-engine
           channels:
@@ -206,14 +206,14 @@ mirror:
               maxVersion: 2.2.4
         - name: lvms-operator
           channels:
-            - name: 'stable-4.12'
-              minVersion: 4.12.1
-              maxVersion: 4.12.1
+            - name: 'stable-4.13'
+              minVersion: 4.13.1
+              maxVersion: 4.13.1
         - name: nfd
           channels:
             - name: 'stable'
-              minVersion: 4.12.0-20230510151
-              maxVersion: 4.12.0-202305101515
+              minVersion: 4.13.0-202305262054
+              maxVersion: 4.13.0-202305262054
         - name: mtv-operator
           channels:
             - name: 'release-v2.4'
@@ -222,14 +222,14 @@ mirror:
         - name: kubevirt-hyperconverged
           channels:
             - name: 'stable'
-              minVersion: 4.12.3
-              maxVersion: 4.12.3
+              minVersion: 4.13.0
+              maxVersion: 4.13.0
         - name: kubernetes-nmstate-operator
           channels:
             - name: 'stable'
-              minVersion: 4.12.0-202305101515
-              maxVersion: 4.12.0-202305101515
-    - catalog: registry.redhat.io/redhat/certified-operator-index:v4.12
+              minVersion: 4.13.0-202305262054
+              maxVersion: 4.13.0-202305262054
+    - catalog: registry.redhat.io/redhat/certified-operator-index:v4.13
       packages:
         - name: gpu-operator-certified
           channels:
@@ -243,7 +243,7 @@ Now rerun precache with the `--skip-imageset` argument set so it uses our file:
 ```bash
 podman run -v /mnt:/mnt -v /root/.docker:/root/.docker --privileged --rm quay.io/openshift-kni/telco-ran-tools -- \
    factory-precaching-cli download \
-   -r 4.12.18 \
+   -r 4.13.1 \
    --acm-version 2.7.4 \
    --mce-version 2.2.4 \
    --parallel 10 \
@@ -256,14 +256,14 @@ Depending on your broadband speed (and mine is 50/20 which is pretty rubbish, i 
 ```bash
 Summary:
 
-Release:                            4.12.18
+Release:                            4.13.1
 ACM Version:                        2.7.4
 MCE Version:                        2.2.4
 Include DU Profile:                 No
 Workers:                            10
 
-Total Images:                       350
-Downloaded:                         350
+Total Images:                       320
+Downloaded:                         320
 Skipped (Previously Downloaded):    0
 Download Failures:                  0
 Time for Download:                  5h10m54s
@@ -299,7 +299,7 @@ Apply the diffs to the ignition to enable precache features, works around known 
 
 ```bash
 meld \
-  bootstrap-in-place-for-live-iso-formatted-with-boot-beauty.ign \
+  bootstrap-in-place-for-live-iso-formatted-with-boot-beauty-4.13.1.ign \
   cluster/bootstrap-in-place-for-live-iso-formatted.ign
 ```
 
@@ -318,7 +318,7 @@ Create iso with embedded ignition
 
 ```bash
 ./coreos-installer iso ignition embed \
-  -fi cluster/bootstrap-in-place-for-live-iso-formatted.ign rhcos-4.12.17-x86_64-live.x86_64.iso \
+  -fi cluster/bootstrap-in-place-for-live-iso-formatted.ign rhcos-4.13.0-x86_64-live.x86_64.iso \
   -o rhcos-live.x86_64.iso
 ```
 
@@ -582,11 +582,11 @@ There is no easy way around this, you must regenerate you ignition (24hr hardcod
 
 Do this if you want to pre-create usb iso's and need them done ahead of time and have bootstrap certs stay valid for longer than 24hr.
 
-Build a custom openshift-installer binary for OpenShift v4.12.18 that sets all ValidityOneDay certs to ValidityOneYear certs (WARNING: they are short lived so others cannot use them nefariously).
+Build a custom openshift-installer binary for OpenShift v4.13.1 that sets all ValidityOneDay certs to ValidityOneYear certs (WARNING: they are short lived so others cannot use them nefariously).
 
 ```bash
-wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.12.18/openshift-install-src-4.12.18-x86_64.tar.gz
-tar xzvf openshift-install-src-4.12.18-x86_64.tar.gz
+wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.13.1/openshift-install-src-4.13.1-x86_64.tar.gz
+tar xzvf openshift-install-src-4.13.1-x86_64.tar.gz
 -- vi - replace all CertCfg: ValidityOneDay -> ValidityOneYear
 -- hack the build.sh so we are not tagging it to git
 ./hack/build.sh
@@ -612,7 +612,7 @@ Certificate:
             Not After : Jun  7 19:26:35 2024 GMT
 ```
 
-In generated ignition make sure /usr/local/bin/release-image.sh -> points to a non-ci image (compiled installer will generate registry.ci.openshift.org/origin/release:4.12)
+In generated ignition make sure /usr/local/bin/release-image.sh -> points to a non-ci image (compiled installer will generate registry.ci.openshift.org/origin/release)
 
 ### CNI OVNKubernetes hangs
 
