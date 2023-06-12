@@ -438,7 +438,7 @@ systemctl status machine-config-daemon-firstboot.service
 systemctl status machine-config-daemon-pull.service
 ```
 
-`FIXME` - We can see on the core NIC the following traffic post install from these activities - ideally these are cached as well / we fix the service ordering.
+`FIXME` - We can see on the core NIC the following traffic post install from these activities - ideally these are cached as well.
 
 ```bash
 [core@bip ~]$ ifconfig enp0s25
