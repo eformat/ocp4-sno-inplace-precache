@@ -299,7 +299,7 @@ cat cluster/bootstrap-in-place-for-live-iso.ign | jq . > cluster/bootstrap-in-pl
 
 Apply the diffs to the ignition to enable precache features, works around known bugs. The `bootstrap-in-place-for-live-iso-formatted-with-boot-beauty.ign` is sanitized to remove all secrets, contains the base64 encoded [mods](./mods/) files and systemd changes.
 
-`FIXME` - we jq/butane like automation for all this.
+`FIXME` - we need jq/butane like automation for this step.
 
 ```bash
 meld \
