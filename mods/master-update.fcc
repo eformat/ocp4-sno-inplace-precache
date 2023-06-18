@@ -78,8 +78,8 @@ systemd:
       contents: |
         [Unit]
         Description==Load prestaged OCP images into containers storage post reboot
-        Wants=multi-user.target
-        After=machine-config-daemon-pull.service nodeip-configuration.service
+        Before=network-pre.target
+        Wants=network-pre.target
         [Service]
         Type=oneshot
         ExecStart=bash /usr/local/bin/extract-ocp.sh

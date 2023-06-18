@@ -1,0 +1,4 @@
+quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:cf6d1bd2361806194ed27dcae9da890e59977a8629144a4b2f4dbd497c7f80c9
+quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:7270ceb168750f0c4ae0afb0086b6dc111dd0da5a96ef32638e8c414b288d228
+quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:4964f9b316ef38d1755f1a51287f9cbe290d3762525e003ac872a4506545186f
+quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1096df81ff95963af03e309e0bd3fb2316e42094c539950d73f7dd8d7044fc96
