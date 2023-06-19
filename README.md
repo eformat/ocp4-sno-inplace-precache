@@ -477,6 +477,72 @@ oc whoami --show-console
 cat <path to>/cluster/auth/kubeadmin-password
 ```
 
+### (9) Lifecycle Management
+
+💥💥 Experimental 💥💥
+
+Let's say we now wish to update the remote edge to a new version v4.13.2. The limiting factor is the bandwidth connection to the remote edge. We only wish to consume a portion of it to drip feed updates.
+
+A pseudo approach might look like this.
+
+Get the new images for v4.13.2 centrally
+
+```bash
+-- pre-cache newer version to usb / central location
+podman run -v /mnt:/mnt -v /root/.docker:/root/.docker --privileged --rm quay.io/openshift-kni/telco-ran-tools -- \
+   factory-precaching-cli download \
+   -r 4.13.2 \
+   --acm-version 2.7.4 \
+   --mce-version 2.2.4 \
+   --parallel 10 \
+   --skip-imageset \
+   -f /mnt
+```
+
+Setup the factory edge node to allow ssh/rsync as root
+
+```bash
+# allow root rsync - copy coreos ssh key for now
+[root@bip .ssh]# ls authorized_keys.d/
+authorized_keys
+[root@bip .ssh]# pwd
+/root/.ssh
+
+# allow root login via ssh
+[root@bip .ssh]# vi /etc/ssh/sshd_config.d/40-rhcos-defaults.conf 
+PasswordAuthentication no
+PermitRootLogin yes
+
+# restart
+systemctl resart sshd
+```
+
+Mount the boot system cache on remote factory edge node
+
+```bash
+# mount pre-cache
+mkdir /mnt/system
+mount /dev/sda5 /mnt/system
+```
+
+Use bandwidth limiting and rsync to copy content slowly from central location to factory edge node
+
+```bash
+rsync -av -i ~/.ssh/id_rsa --bwlimit=1000 /mnt/ root@192.168.86.45:/mnt/system/
+```
+
+Load image content into local image cache using podman script on the factory edge node
+
+```bash
+/usr/local/bin/extract-ocp.sh
+```
+
+Then do upgrade from ACM/centrally for the factory edge node
+
+```bash
+oc adm upgrade --force --to=4.13.2
+```
+
 ## Troubleshooting
 Transform the data (e.g. normalize stock prices) using dbt.
 
@@ -653,72 +719,6 @@ I am pretty sure this is a bug / race condition. No files in
 ```
 
 Just reboot the node again, it should come up OK and continue.
-
-### Lifecycle Management
-
-💥💥 Experimental 💥💥
-
-Let's say we now wish to update the remote edge to a new version v4.13.2. The limiting factor is the bandwidth connection to the remote edge. We only wish to consume a portion of it to drip feed updates.
-
-A pseudo approach might look like this.
-
-Get the new images for v4.13.2 centrally
-
-```bash
--- pre-cache newer version to usb / central location
-podman run -v /mnt:/mnt -v /root/.docker:/root/.docker --privileged --rm quay.io/openshift-kni/telco-ran-tools -- \
-   factory-precaching-cli download \
-   -r 4.13.2 \
-   --acm-version 2.7.4 \
-   --mce-version 2.2.4 \
-   --parallel 10 \
-   --skip-imageset \
-   -f /mnt
-```
-
-Setup the factory edge node to allow ssh/rsync as root
-
-```bash
-# allow root rsync - copy coreos ssh key for now
-[root@bip .ssh]# ls authorized_keys.d/
-authorized_keys
-[root@bip .ssh]# pwd
-/root/.ssh
-
-# allow root login via ssh
-[root@bip .ssh]# vi /etc/ssh/sshd_config.d/40-rhcos-defaults.conf 
-PasswordAuthentication no
-PermitRootLogin yes
-
-# restart
-systemctl resart sshd
-```
-
-Mount the boot system cache on remote factory edge node
-
-```bash
-# mount pre-cache
-mkdir /mnt/system
-mount /dev/sda5 /mnt/system
-```
-
-Use bandwidth limiting and rsync to copy content slowly from central location to factory edge node
-
-```bash
-rsync -av -i ~/.ssh/id_rsa --bwlimit=1000 /mnt/ root@192.168.86.45:/mnt/system/
-```
-
-Load image content into local image cache using podman script on the factory edge node
-
-```bash
-/usr/local/bin/extract-ocp.sh
-```
-
-Then do upgrade from ACM/centrally for the factory edge node
-
-```bash
-oc adm upgrade --force --to=4.13.2
-```
 
 ## Useful Links 📖
 - [manage disk partitions with sgdisk](https://fedoramagazine.org/managing-partitions-with-sgdisk/)
